@@ -8,6 +8,14 @@ def parse_numbers_split(s: str) -> list[int]:
     return [int(x) for x in s.split()]
 
 
+def parse_coords_int(s: str) -> dict[tuple[int, int], int]:
+    coords = {}
+    for y, line in enumerate(s.splitlines()):
+        for x, c in enumerate(line):
+            coords[(x, y)] = int(c)
+    return coords
+
+
 @contextlib.contextmanager
 def timing(name: str = "") -> Generator[None, None, None]:
     before = time.time()
