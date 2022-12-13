@@ -80,3 +80,10 @@ def format_coords_hash(coords: set[tuple[int, int]]) -> str:
         )
         for y in range(min_y, max_y + 1)
     )
+
+
+def adjacent_4(x: int, y: int) -> Generator[tuple[int, int], None, None]:
+    yield x, y - 1
+    yield x + 1, y
+    yield x, y + 1
+    yield x - 1, y
