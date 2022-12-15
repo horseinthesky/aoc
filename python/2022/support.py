@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import enum
 import contextlib
+import enum
 import sys
 import time
 from typing import Generator
@@ -87,3 +87,8 @@ def adjacent_4(x: int, y: int) -> Generator[tuple[int, int], None, None]:
     yield x + 1, y
     yield x, y + 1
     yield x - 1, y
+
+
+def parse_point_comma(s: str) -> tuple[int, int]:
+    a_s, b_s = s.split(',')
+    return int(a_s), int(b_s)
