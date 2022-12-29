@@ -86,6 +86,14 @@ def adjacent_4(x: int, y: int) -> Generator[tuple[int, int], None, None]:
     yield x - 1, y
 
 
+def adjacent_8(x: int, y: int) -> Generator[tuple[int, int], None, None]:
+    for y_d in (-1, 0, 1):
+        for x_d in (-1, 0, 1):
+            if y_d == x_d == 0:
+                continue
+            yield x + x_d, y + y_d
+
+
 def parse_point_comma(s: str) -> tuple[int, int]:
     a_s, b_s = s.split(",")
     return int(a_s), int(b_s)
