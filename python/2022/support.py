@@ -4,7 +4,7 @@ import contextlib
 import enum
 import sys
 import time
-from typing import Generator
+from typing import Generator, NamedTuple, Iterable
 
 
 def parse_numbers_split(s: str) -> list[int]:
@@ -73,11 +73,8 @@ def format_coords_hash(coords: set[tuple[int, int]]) -> str:
     max_x = max(x for x, _ in coords)
     min_y = min(y for _, y in coords)
     max_y = max(y for _, y in coords)
-    return '\n'.join(
-        ''.join(
-            '#' if (x, y) in coords else ' '
-            for x in range(min_x, max_x + 1)
-        )
+    return "\n".join(
+        "".join("#" if (x, y) in coords else " " for x in range(min_x, max_x + 1))
         for y in range(min_y, max_y + 1)
     )
 
@@ -90,5 +87,27 @@ def adjacent_4(x: int, y: int) -> Generator[tuple[int, int], None, None]:
 
 
 def parse_point_comma(s: str) -> tuple[int, int]:
-    a_s, b_s = s.split(',')
+    a_s, b_s = s.split(",")
     return int(a_s), int(b_s)
+
+
+def parse_coords_hash(s: str) -> set[tuple[int, int]]:
+    coords = set()
+    for y, line in enumerate(s.splitlines()):
+        for x, c in enumerate(line):
+            if c == "#":
+                coords.add((x, y))
+    return coords
+
+
+class Bound(NamedTuple):
+    min: int
+    max: int
+
+    @property
+    def range(self) -> range:
+        return range(self.min, self.max + 1)
+
+
+def bounds(points: Iterable[tuple[int, ...]]) -> tuple[Bound, ...]:
+    return tuple(Bound(min(dim), max(dim)) for dim in zip(*points))
