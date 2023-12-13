@@ -1,4 +1,4 @@
 target
+dhat-heap.json
+benchmarks.txt
 day*.bench.txt
-.env
-.envrc
