@@ -1,3 +1,12 @@
+use nom::{
+    branch::alt,
+    bytes::complete::tag,
+    character::complete::anychar,
+    combinator::{iterator, value},
+    // multi::many1,
+    IResult,
+};
+
 use crate::custom_error::AocError;
 
 #[tracing::instrument]
@@ -10,24 +19,44 @@ pub fn process(
     Ok(output.to_string())
 }
 
+fn numbers(input: &str) -> IResult<&str, Option<u32>> {
+    let res: IResult<&str, u32> = alt((
+        value(1, tag("one")),
+        value(2, tag("two")),
+        value(3, tag("three")),
+        value(4, tag("four")),
+        value(5, tag("five")),
+        value(6, tag("six")),
+        value(7, tag("seven")),
+        value(8, tag("eight")),
+        value(9, tag("nine")),
+    ))(input);
+
+    let (input, digit) = anychar(input)?;
+
+    match res {
+        Ok((_, digit)) => Ok((input, Some(digit))),
+        Err(_) => Ok((input, digit.to_digit(10))),
+    }
+}
+
+fn parser(input: &str) -> IResult<&str, Vec<u32>> {
+    // can do this more simply than iterator, but it
+    // costs some microseconds it
+    // let (input, output) = many1(numbers)(input)?;
+    let mut it = iterator(input, numbers);
+
+    let output = it.flatten().collect();
+    let (input, _) = it.finish()?;
+
+    Ok((input, output))
+}
+
 #[tracing::instrument]
 fn process_line(line: &str) -> u32 {
-    let mut it = (0..line.len()).filter_map(|index| {
-        match &line[index..] {
-            line if line.starts_with("one") => Some(1),
-            line if line.starts_with("two") => Some(2),
-            line if line.starts_with("three") => Some(3),
-            line if line.starts_with("four") => Some(4),
-            line if line.starts_with("five") => Some(5),
-            line if line.starts_with("six") => Some(6),
-            line if line.starts_with("seven") => Some(7),
-            line if line.starts_with("eight") => Some(8),
-            line if line.starts_with("nine") => Some(9),
-            line => {
-                line.chars().next().unwrap().to_digit(10)
-            }
-        }
-    });
+    let result = parser(line).unwrap();
+
+    let mut it = result.1.iter();
     let first = it.next().expect("should be a number");
 
     match it.last() {

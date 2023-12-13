@@ -1,5 +1,5 @@
 [package]
-name = "day-01"
+name = "day-03"
 version = "0.1.0"
 edition = "2021"
 
@@ -12,8 +12,9 @@ tracing.workspace = true
 tracing-subscriber.workspace = true
 miette.workspace = true
 thiserror.workspace = true
-aho-corasick = "1.1.2"
 dhat.workspace = true
+glam.workspace = true
+nom_locate.workspace = true
 
 [dev-dependencies]
 criterion.workspace = true
@@ -21,12 +22,12 @@ divan.workspace = true
 rstest.workspace = true
 
 [[bench]]
-name = "day-01-bench"
+name = "day-03-bench"
 path = "benches/benchmarks.rs"
 harness = false
 
 [[bench]]
-name = "day-01-bench-criterion"
+name = "day-03-bench-criterion"
 path = "benches/benchmarks-criterion.rs"
 harness = false
 

@@ -16,6 +16,7 @@ cargo flamegraph
 ## Quick setup
 
 ```shell
+rustup install nightly
 cargo install cargo-watch cargo-nextest cargo-generate flamegraph just
 ```
 

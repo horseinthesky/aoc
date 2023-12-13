@@ -1,4 +1,5 @@
 use crate::custom_error::AocError;
+use aho_corasick::AhoCorasick;
 
 #[tracing::instrument]
 pub fn process(
@@ -10,29 +11,56 @@ pub fn process(
     Ok(output.to_string())
 }
 
+const PATTERNS: [&str; 19] = [
+    "one", "two", "three", "four", "five", "six", "seven",
+    "eight", "nine", "0", "1", "2", "3", "4", "5", "6",
+    "7", "8", "9",
+];
+
 #[tracing::instrument]
 fn process_line(line: &str) -> u32 {
-    let mut it = (0..line.len()).filter_map(|index| {
-        match &line[index..] {
-            line if line.starts_with("one") => Some(1),
-            line if line.starts_with("two") => Some(2),
-            line if line.starts_with("three") => Some(3),
-            line if line.starts_with("four") => Some(4),
-            line if line.starts_with("five") => Some(5),
-            line if line.starts_with("six") => Some(6),
-            line if line.starts_with("seven") => Some(7),
-            line if line.starts_with("eight") => Some(8),
-            line if line.starts_with("nine") => Some(9),
-            line => {
-                line.chars().next().unwrap().to_digit(10)
-            }
-        }
-    });
-    let first = it.next().expect("should be a number");
+    let ac = AhoCorasick::new(PATTERNS).unwrap();
 
-    match it.last() {
+    let mut it = ac.find_overlapping_iter(line);
+    let first = from_matchables(
+        PATTERNS[it
+            .next()
+            .expect("should be a number")
+            .pattern()],
+    );
+
+    match it
+        .last()
+        .map(|mat| from_matchables(PATTERNS[mat.pattern()]))
+    {
         Some(num) => first * 10 + num,
         None => first * 10 + first,
+    }
+}
+
+#[tracing::instrument]
+fn from_matchables(input: &str) -> u32 {
+    match input {
+        "one" => 1,
+        "two" => 2,
+        "three" => 3,
+        "four" => 4,
+        "five" => 5,
+        "six" => 6,
+        "seven" => 7,
+        "eight" => 8,
+        "nine" => 9,
+        "0" => 0,
+        "1" => 1,
+        "2" => 2,
+        "3" => 3,
+        "4" => 4,
+        "5" => 5,
+        "6" => 6,
+        "7" => 7,
+        "8" => 8,
+        "9" => 9,
+        _ => panic!("unexpected number!"),
     }
 }
 
