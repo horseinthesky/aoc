@@ -19,17 +19,18 @@ create day:
 
 # get the input for a day's puzzle
 get-input day:
-    ./scripts/get-aoc-input.rs --day {{day}} --current-working-directory {{justfile_directory()}}
+    /usr/bin/env cargo +nightly -Zscript scripts/get-aoc-input.rs --day {{day}} --current-working-directory {{justfile_directory()}}
+    # ./scripts/get-aoc-input.rs --day {{day}} --current-working-directory {{justfile_directory()}}
 
 # Use `just work day-01 part1` to work on the specific binary for a specific day's problems
 work day part:
     cargo watch -w {{day}} -x "check -p {{day}}" -s "just test {{day}} {{part}}" -s "just lint {{day}}" -s "just bench {{day}} {{part}}"
 
 www-watch:
-   RUST_LOG=info cargo +nightly leptos watch --project www
+    RUST_LOG=info cargo +nightly leptos watch --project www
 
 www-build:
-   cargo +nightly leptos build --project www --release
+    cargo +nightly leptos build --project www --release
 
 lint day:
     cargo clippy -p {{day}}
