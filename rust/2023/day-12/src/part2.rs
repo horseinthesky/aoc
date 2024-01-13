@@ -112,14 +112,14 @@ pub fn process(
             .copied()
             .collect::<Vec<_>>();
 
-        cache.clear();
-
         res += possible_ways(
             &mut cache,
             new_vents.as_bytes(),
             None,
             &new_nums,
         );
+
+        cache.clear();
     });
 
     Ok(res.to_string())

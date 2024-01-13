@@ -15,6 +15,7 @@ fn possible_ways(
             _ => 0,
         };
     }
+
     if within.is_some() && remaining.is_empty() {
         return 0;
     }
@@ -24,6 +25,7 @@ fn possible_ways(
         within.unwrap_or(0),
         remaining.len(),
     );
+
     if let Some(&x) = cache.get(&key) {
         return x;
     }
@@ -103,14 +105,14 @@ pub fn process(
             .map(|w| w.parse::<usize>().unwrap())
             .collect::<Vec<_>>();
 
-        cache.clear();
-
         res += possible_ways(
             &mut cache,
             vents.as_bytes(),
             None,
             &nums,
         );
+
+        cache.clear();
     });
 
     Ok(res.to_string())
