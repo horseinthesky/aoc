@@ -60,6 +60,7 @@ pub fn process(
             roll_north(&mut map);
             rotate(&mut map, &mut tmpmap);
         }
+
         if let Some(seen_at) = seen.insert(map.clone(), i) {
             if (1000000000 - i) % (i - seen_at) == 0 {
                 break;
