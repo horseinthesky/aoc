@@ -1,65 +1,42 @@
 use crate::custom_error::AocError;
 
+const STR_DIGITS: &[&[u8]] = &[
+    b"one", b"two", b"three", b"four", b"five", b"six",
+    b"seven", b"eight", b"nine",
+];
+
+fn digit_sum(w: &[u8], part_two: bool) -> usize {
+    let mut digits =
+        (0..w.len()).filter_map(|i| match w[i] {
+            b'0'..=b'9' => Some((w[i] - b'0') as usize),
+            _ if part_two => STR_DIGITS
+                .iter()
+                .enumerate()
+                .find_map(|(di, d)| {
+                    w[i..].starts_with(d).then_some(di + 1)
+                }),
+            _ => None,
+        });
+    let a = digits.next().unwrap();
+    let b = digits.last().unwrap_or(a);
+    a * 10 + b
+}
+
 #[tracing::instrument]
 pub fn process(
     input: &str,
 ) -> miette::Result<String, AocError> {
-    let output =
-        input.lines().map(process_line).sum::<u32>();
-
-    Ok(output.to_string())
-}
-
-#[tracing::instrument]
-fn process_line(line: &str) -> u32 {
-    let mut it = (0..line.len()).filter_map(|index| {
-        match &line[index..] {
-            line if line.starts_with("one") => Some(1),
-            line if line.starts_with("two") => Some(2),
-            line if line.starts_with("three") => Some(3),
-            line if line.starts_with("four") => Some(4),
-            line if line.starts_with("five") => Some(5),
-            line if line.starts_with("six") => Some(6),
-            line if line.starts_with("seven") => Some(7),
-            line if line.starts_with("eight") => Some(8),
-            line if line.starts_with("nine") => Some(9),
-            line => {
-                line.chars().next().unwrap().to_digit(10)
-            }
-        }
-    });
-    let first = it.next().expect("should be a number");
-
-    match it.last() {
-        Some(num) => first * 10 + num,
-        None => first * 10 + first,
+    let mut res = 0;
+    for l in input.lines() {
+        res += digit_sum(l.as_bytes(), true);
     }
+
+    Ok(res.to_string())
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    use rstest::rstest;
-
-    #[rstest]
-    #[case("two1nine", 29)]
-    #[case("eightwothree", 83)]
-    #[case("abcone2threexyz", 13)]
-    #[case("xtwone3four", 24)]
-    #[case("4nineeightseven2", 42)]
-    #[case("zoneight234", 14)]
-    #[case("7pqrstsixteen", 76)]
-    /// this test case is from the real input
-    /// it tests two overlapping numbers
-    /// where the second number should succeed
-    #[case("fivezg8jmf6hrxnhgxxttwoneg", 51)]
-    fn line_test(
-        #[case] line: &str,
-        #[case] expected: u32,
-    ) {
-        assert_eq!(expected, process_line(line))
-    }
 
     #[test]
     fn test_process() -> miette::Result<()> {

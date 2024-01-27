@@ -1,36 +1,26 @@
 use crate::custom_error::AocError;
 
+fn digit_sum(w: &[u8]) -> usize {
+    let mut digits =
+        (0..w.len()).filter_map(|i| match w[i] {
+            b'0'..=b'9' => Some((w[i] - b'0') as usize),
+            _ => None,
+        });
+    let a = digits.next().unwrap();
+    let b = digits.last().unwrap_or(a);
+    a * 10 + b
+}
+
 #[tracing::instrument]
 pub fn process(
     input: &str,
 ) -> miette::Result<String, AocError> {
-    let output = input
-        .lines()
-        .map(|line| {
-            let mut it = line.chars();
+    let mut res = 0;
+    for l in input.lines() {
+        res += digit_sum(l.as_bytes());
+    }
 
-            let first = it
-                .find_map(|character| {
-                    character.to_digit(10)
-                })
-                .expect("should be a number");
-
-            let last = it
-                .rfind(|character| {
-                    character.is_ascii_digit()
-                })
-                .map(|character| {
-                    character.to_digit(10).unwrap()
-                })
-                // if we don't find a number, then we're
-                // re-using the first number
-                .unwrap_or(first);
-
-            first * 10 + last
-        })
-        .sum::<u32>();
-
-    Ok(output.to_string())
+    Ok(res.to_string())
 }
 
 #[cfg(test)]
