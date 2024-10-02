@@ -1,0 +1,29 @@
+[workspace]
+resolver = "2"
+members = [
+  "day*",
+]
+default-members = [
+  "day*",
+]
+
+[workspace.dependencies]
+itertools = "0.13"
+hashbrown = "0.15"
+rayon = "1.8.0"
+rstest = "0.18.2"
+divan = "0.1.4"
+miette = { version = "5.10", features = ["fancy"] }
+thiserror = "1.0.50"
+dhat = "0.3.2"
+criterion = { version = "0.4", features = ["html_reports"] }
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["fmt", "env-filter"] }
+
+[profile.flamegraph]
+inherits = "release"
+debug = true
+
+[profile.dhat]
+inherits = "release"
+debug = 1

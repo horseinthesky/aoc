@@ -1,0 +1,30 @@
+# Display help message
+help:
+  @echo "Available commands:"
+  @echo "  help          - Show this help message"
+  @echo "  get-input     - Get input for a day, e.g. 01"
+  @echo "  create        - Create a new day project, e.g. 01"
+  @echo "  test          - Run day tests, e.g. 01 part1 or 01 \"\" for both parts"
+  @echo "  bench         - Run day benchmarks, e.g. 01 part1 or 01 \"\" for both parts"
+  @echo "  dhat          - Run dhat heap memory profiler, e.g. 01 part1"
+
+# Get input for a day
+get-input day:
+  ./fetch.sh {{ day }}
+
+# Crate new day project
+create day:
+  cargo generate --path ./daily-template --name day{{ day }}
+  just get-input {{ day }}
+
+# Run day tests
+test day part:
+    cargo nextest run -p day{{day}} {{part}}
+
+# Run day benchmarks
+bench day part:
+    cargo bench --bench day{{day}}-bench-divan {{part}} >> day{{day}}.bench.txt
+
+# Run dhat heap memory profiler
+dhat day part:
+    cargo run --profile dhat --features dhat-heap --package day{{day}} --bin {{part}}

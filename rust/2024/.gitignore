@@ -1,0 +1,4 @@
+Cargo.lock
+target
+dhat-heap.json
+day*.bench.txt
