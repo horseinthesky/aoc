@@ -19,12 +19,12 @@ create day:
 
 # Run day tests
 test day part:
-    cargo nextest run -p day{{day}} {{part}}
+    cargo nextest run -p day{{ day }} {{ part }}
 
 # Run day benchmarks
 bench day part:
-    cargo bench --bench day{{day}}-bench-divan {{part}} >> day{{day}}.bench.txt
+    cargo bench --bench day{{ day }}-bench-divan {{ part }} >> day{{ day }}.bench.txt
 
 # Run dhat heap memory profiler
 dhat day part:
-    cargo run --profile dhat --features dhat-heap --package day{{day}} --bin {{part}}
+    cargo run --profile dhat --features dhat-heap --package day{{ day }} --bin {{ part }}

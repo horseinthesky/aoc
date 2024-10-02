@@ -31,7 +31,8 @@ trap 'rm -f "$TMPFILE"' EXIT
 # ./fetch.sh 05 becomes day5/input.txt
 # ./fetch.sh 12 becomes day12/input.txt
 curl "https://adventofcode.com/2023/day/${1#0}/input" \
-  -s --fail \
+  --fail \
+  --connect-timeout 5 \
   --cookie "session=$AOC_SESSION" \
   -A "Bash script at $(git remote -v | awk 'NR==1{print $2}')" \
   | tee "$TMPFILE"
