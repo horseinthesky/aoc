@@ -11,12 +11,12 @@ default-members = [
 itertools = "0.13"
 hashbrown = "0.15"
 rayon = "1.8.0"
-rstest = "0.18.2"
-divan = "0.1.4"
-miette = { version = "5.10", features = ["fancy"] }
-thiserror = "1.0.50"
+rstest = "0.23.0"
+divan = "0.1.16"
+miette = { version = "7.4", features = ["fancy"] }
+thiserror = "2.0.3"
 dhat = "0.3.2"
-criterion = { version = "0.4", features = ["html_reports"] }
+criterion = { version = "0.5.1", features = ["html_reports"] }
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["fmt", "env-filter"] }
 

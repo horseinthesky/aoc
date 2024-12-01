@@ -2,20 +2,25 @@
 help:
   @echo "Available commands:"
   @echo "  help          - Show this help message"
-  @echo "  get-input     - Get input for a day, e.g. 01"
   @echo "  create        - Create a new day project, e.g. 01"
+  @echo "  get-input     - Get input for a day, e.g. 01"
+  @echo "  run           - Run day, e.g. 01 1"
   @echo "  test          - Run day tests, e.g. 01 1 or 01 \"\" for both parts"
   @echo "  bench         - Run day benchmarks, e.g. 01 1 or 01 \"\" for both parts"
   @echo "  dhat          - Run dhat heap memory profiler, e.g. 01 1"
-
-# Get input for a day
-get-input day:
-  ./fetch.sh {{ day }}
 
 # Crate new day project
 create day:
   cargo generate --path ./daily-template --name day{{ day }}
   just get-input {{ day }}
+
+# Get input for a day
+get-input day:
+  ./fetch.sh {{ day }}
+
+# Run day
+run day part:
+  cargo run --manifest-path day{{ day }}/Cargo.toml --bin part{{ part }}
 
 # Run day tests
 test day part:

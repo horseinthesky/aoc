@@ -30,7 +30,8 @@ trap 'rm -f "$TMPFILE"' EXIT
 # #0 removes leading 0 from valus of $1. Makes sure we use correct day value
 # ./fetch.sh 05 becomes day5/input.txt
 # ./fetch.sh 12 becomes day12/input.txt
-curl "https://adventofcode.com/2023/day/${1#0}/input" \
+curl "https://adventofcode.com/2024/day/${1#0}/input" \
+  --silent \
   --fail \
   --connect-timeout 5 \
   --cookie "session=$AOC_SESSION" \
