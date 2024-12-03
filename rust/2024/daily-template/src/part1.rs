@@ -1,10 +1,10 @@
 use crate::custom_error::AocError;
 
-#[tracing::instrument]
+#[tracing::instrument(skip(input), ret)]
 pub fn process(
     input: &str,
 ) -> miette::Result<String, AocError> {
-    todo!();
+    Ok("".to_string())
 }
 
 #[cfg(test)]

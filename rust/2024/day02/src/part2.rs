@@ -34,7 +34,7 @@ fn is_safe(report: &Vec<i32>) -> bool {
     })
 }
 
-#[tracing::instrument]
+#[tracing::instrument(skip(input), ret)]
 pub fn process(input: &str) -> miette::Result<String, AocError> {
     let safe = input
         .lines()

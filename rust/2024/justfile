@@ -20,7 +20,7 @@ get-input day:
 
 # Run day
 run day part:
-  cargo run --manifest-path day{{ day }}/Cargo.toml --bin part{{ part }}
+  cargo run --package day{{ day }} --bin part{{ part }}
 
 # Run day tests
 test day part:
